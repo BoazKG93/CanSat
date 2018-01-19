@@ -4,6 +4,7 @@
 #include "Adafruit_Sensor.h"
 #include "Adafruit_BMP280.h"
 
+
 enum Position {Outer = 0, Inner = 1};
 
 typedef struct data {
@@ -22,23 +23,18 @@ typedef struct data {
 } data;
 
 
-//Start systems
-int launch();
-
 //Eject the can
-int ejection();
-
-//Collect the data
+int ejection(); //TODO: Implement Ejection
+//Connect the sensors
 void connect();
-
+//Get data
 void getGyroData(data* rawData);
-
 void getAnalogTemp(data* rawData, const int pin, int position);
-
 void getBMEData(data* rawData);
-
-//Save the data
-void saveData();
+//Get launch signal from PC
+int getSignalFromPC();
+//Replay to PC
+void replyToPC(char* string);
 
 #endif 
 

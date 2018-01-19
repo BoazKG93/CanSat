@@ -1,5 +1,6 @@
 #include "CanSatLib.h"
 
+int newDataFromPC = 0;
 Adafruit_BMP280 bme;
 
 void connect() {
@@ -72,6 +73,24 @@ void getBMEData(data* rawData) {
 }
 
 
+int getSignalFromPC() { 
+  if(Serial.available() > 0) {
+    int x = Serial.read();
+	    if(x == 1) {
+	    	newDataFromPC = 1;
+	    	return 1;
+	    }
+    }
+}
+
+void replyToPC(char* string) {
+  if (newDataFromPC) {
+    newDataFromPC = 0;
+    Serial.print("<");
+    Serial.print(string);
+    Serial.println(">");
+  }
+}
 
 
 
