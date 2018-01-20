@@ -24,7 +24,7 @@ typedef struct data {
 
 
 //Eject the can
-int ejection(); //TODO: Implement Ejection
+int ejection(float prevAltitude, float currentAltitude); //TODO: Implement Ejection
 //Connect the sensors
 void connect();
 //Get data

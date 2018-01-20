@@ -75,12 +75,14 @@ void getBMEData(data* rawData) {
 
 int getSignalFromPC() { 
   if(Serial.available() > 0) {
-    int x = Serial.read();
-	    if(x == 1) {
-	    	newDataFromPC = 1;
-	    	return 1;
-	    }
-    }
+    char x = Serial.read();
+    int online = x;
+    if(online == 49) { //ASCII for 1 
+    	return 1;
+    } else {
+    	return 0;
+    } 
+   }
 }
 
 void replyToPC(char* string) {
@@ -90,6 +92,16 @@ void replyToPC(char* string) {
     Serial.print(string);
     Serial.println(">");
   }
+}
+
+
+int ejection(float prevAltitude, float currentAltitude) {
+	float diff = currentAltitude - prevAltitude;
+	if(diff < -0.8) { //1 for 1cm or 1m fall?
+		return 1;
+	} else {
+		return 0;
+	}
 }
 
 
