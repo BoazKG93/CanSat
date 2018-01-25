@@ -33,8 +33,6 @@ void getAnalogTemp(data* rawData, const int pin, int position);
 void getBMEData(data* rawData);
 //Get launch signal from PC
 int getSignalFromPC();
-//Replay to PC
-void replyToPC(char* string);
 
 #endif 
 
