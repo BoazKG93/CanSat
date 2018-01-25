@@ -1,3 +1,4 @@
+
 def sendToArduino(sendStr):
   ser.write(sendStr.encode())
 
@@ -22,57 +23,6 @@ def recvFromArduino():
   
   return(ck)
 
-
-def waitForArduino():
-
-   # wait until the Arduino sends 'Arduino Ready' - allows time for Arduino reset
-   # it also ensures that any bytes left over from a previous message are discarded
-   
-    global startMarker, endMarker
-    
-    msg = ""
-    while msg.find("Satallite is ready") == -1:
-
-      while ser.inWaiting() == 0:
-        pass
-        
-      msg = recvFromArduino()
-
-      print(msg)
-      
-
-def communicate(td):
-  numLoops = len(td)
-  waitingForReply = False
-
-  n = 0
-  while n < numLoops:
-
-    teststr = td[n]
-
-    if waitingForReply == False:
-      sendToArduino(teststr)
-      print("Sent from PC -- ",str(teststr))
-      waitingForReply = True
-
-    if waitingForReply == True:
-
-      while ser.inWaiting() == 0:
-        pass
-        
-      dataRecvd = recvFromArduino()
-      print("Reply Received: ",dataRecvd)
-      n += 1
-      waitingForReply = False
-
-      print("===========")
-
-    time.sleep(5)
-  # Define callback.
-  def my_data_received_callback(xbee_message):
-      address = xbee_message.remote_device.get_64bit_addr()
-      data = xbee_message.data.decode("utf8")
-      print("Received data from %s: %s" % (address, data))
 
 import serial
 import time
