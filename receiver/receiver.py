@@ -32,27 +32,37 @@ if __name__ == "__main__":
   baudRate = 9600 #input("Please enter the Baudrate: ")
   ser = serial.Serial(serPort, baudRate)
   print("Serial port ",serPort," opened  Baudrate ",str(baudRate))
-
+  ser.flushInput()
+  ser.flushOutput()
+  while ser.inWaiting():
+    ser.read()
   startMarker = 60
   endMarker = 62
   input("Turn on sensors?")
   #TODO: Implement a send/rec signal to turn sat online
   sendToArduino("1")
+  time.sleep(0.1)
   onlineResponse = recvFromArduino()
-  if(onlineResponse == "Satallite is ready"):
-    print(onlineResponse)
+  while "Satallite is ready" not in onlineResponse:
+      onlineResponse = recvFromArduino()
+  if "Satallite is ready" in onlineResponse:
+    index = onlineResponse.find("Satallite is ready")
+    print(onlineResponse[index:])
     print(recvFromArduino())
+    time.sleep(1)
     print(recvFromArduino())
+    time.sleep(1)
     print("==================")
     input("Launch it?")
     sendToArduino("1")
+    time.sleep(0.5)
     print(recvFromArduino())
     print("==================")
     ser.flushInput()
     ser.flushOutput()
     with open('data.csv', 'w+') as the_file:
       the_file.write("Timestamp (ms),innerAnalogTemp,outerAnalogTemp,pressure,altitude,AccX,AccY,AccZ,innerDigitalTemp\n")
-      timeout = time.time() + 60
+      timeout = time.time() + 10
       while True:
   #        time.sleep(0.25)
           timer = 0
@@ -61,12 +71,14 @@ if __name__ == "__main__":
           ser.flushInput()
           ser.flushOutput()
           data = recvFromArduino()
-          print(data)
+          print("data:",data)
           the_file.write(data)
           the_file.write("\n")
           timer = timer - 1
   #        time.sleep(0.25)
-  
-
+  while ser.inWaiting():
+    ser.read()
+  ser.flushInput()
+  ser.flushOutput()
   ser.close
 

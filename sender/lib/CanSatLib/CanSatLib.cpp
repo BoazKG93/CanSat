@@ -1,6 +1,8 @@
 #include "CanSatLib.h"
 
+
 Adafruit_BMP280 bme;
+
 
 void connect() {
   	//Connect bme
@@ -23,6 +25,9 @@ void connect() {
 	Wire.write(GYRO_CONFIG);
 	Wire.write(0x08);
 	Wire.endTransmission();
+	//myservo.attach(11);
+	//myservo.write(20);
+	//rawData->servoPos = 20;
 }
 
 void getGyroData(data* rawData) {
@@ -51,6 +56,7 @@ void getGyroData(data* rawData) {
 
 
 }
+
 
 
 void getAnalogTemp(data* rawData, const int pin, int position) {

@@ -1,7 +1,9 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <SPI.h>
+#include "Servo.h"
 #include "CanSatLib.h"
+Servo myservo;
 
 unsigned long StartTime = 0;
 unsigned long CurrentTime = 0;
@@ -11,11 +13,12 @@ int i = 1;
 int online = 0;
 int go = 0;
 int eject = 0;
+int position = 0;
 
 void readSensors() {
+    struct data* rawData = (data*)malloc(sizeof(data));
     CurrentTime = millis();
     ElapsedTime = (CurrentTime - StartTime);
-    struct data* rawData = (data*)malloc(sizeof(data));
     getGyroData(rawData);
     getAnalogTemp(rawData, 0, Inner);
     getAnalogTemp(rawData, 1, Outer);
@@ -25,7 +28,6 @@ void readSensors() {
     } else if(!eject) {
         eject = ejection(prevAltitude, rawData->altitude);
     }
-    //TODO: Eject the satallite when data reachs critirium
     //Send data in csv form:   
     Serial.print("<");
     Serial.print(ElapsedTime); // divide by 512 is approx = half-seconds
@@ -37,8 +39,10 @@ void readSensors() {
     Serial.print(","); Serial.print(rawData->AccY);
     Serial.print(","); Serial.print(rawData->AccZ);
     Serial.print(","); Serial.print(rawData->innerDigitalTemp);
+    Serial.print(","); Serial.print(position);
     Serial.println(">");
-    free(rawData); //free the data  
+     //free the data 
+     free(rawData); 
 }
 
 //=============
@@ -50,9 +54,6 @@ void setup() {
 //=============
 
 void loop() {
-    pinMode(13, OUTPUT);
-    pinMode(12, OUTPUT);
-    pinMode(11, OUTPUT);
     if(Serial.available() > 0 && !online) {
         char x = Serial.read();
         int y = x;
@@ -60,11 +61,16 @@ void loop() {
             digitalWrite(13, HIGH);
             online = 1; //Going online!
             connect();
+            myservo.attach(11);
             Serial.print("<Satallite is ready>");
+            delay(200);
+            position = 20;
+            myservo.write(position);
             Serial.print("<Example sensor read:>");
+            delay(100);
             readSensors();
         }
-    } else if(Serial.available() > 0 && !go) {
+    } else if(Serial.available() > 0 && !go && online) {
         char x = Serial.read();
         int y = x;
         if(y == 49) {
@@ -74,16 +80,18 @@ void loop() {
             StartTime = millis();
         }
     } else if(online && go) {
-        if((eject && i>1) || i > 200) { //100s time..
+        if((eject && i>6) || i > 10) { //100s time..
             //TODO: Implement motor signal to eject
-            digitalWrite(11, HIGH);
+            position = 180;
+            myservo.write(position);
         }
 
         readSensors();
-
         i++;
+        
     }
     delay(500);
+    
 }
 
 
