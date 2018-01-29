@@ -65,6 +65,14 @@ Not yet registered
 ## Contribute
 Contribution is more than welcome! just commit your changes into a review and we can expand this project to even more bigger and smarter satallites.
 
+Some ideas to improve the project:
+* Add more stability to the sender/receiver mechanism 
+* Write Unit testing for receiver.py
+* Add more advanced sensors
+* Add an automated graph program
+* Consider replacing the Hardware Serial with Software Serial
+* Use XBee library for communication instead of Serial
+
 ## Copyright and license
 
 
