@@ -5,19 +5,19 @@ This project is for learning purposes only. It has been tested on Arduino Nano a
 The project is divided into two main parts:
 
 
-1. Reciever (ground station)
+1. receiver (ground station)
 2. Sender (Satallite system)
 
-The reciever (1) is written in Python 3 and is pretty straightforward, while the sender (2) is a bit more complicated and written in C++.
+The receiver (1) is written in Python 3 and is pretty straightforward, while the sender (2) is a bit more complicated and written in C++.
 
 **Table of Contents**
 
 - [Arduino setup](#arduino-setup)
-- [The reciever](#the-reciever)
+- [The receiver](#the-receiver)
 - [The sender](#the-sender)
 - [Editing the files](#editing-the-files)
   - [sender](#sender)
-  - [reciever](#reciever)
+  - [receiver](#receiver)
 - [Bugs](#bugs)
 - [Contributing](#contributing)
 - [Copyright and License](#copyright-and-license)
@@ -26,20 +26,20 @@ The reciever (1) is written in Python 3 and is pretty straightforward, while the
 ## Arduino setup
 The following sensors and setup are required in order to get things running:
 ![Circuit board](http://i63.tinypic.com/vzvtcy.jpg)
-Also, you will need an XBee transmitor connected to your computer to recieve the data with the reciever.
+Also, you will need an XBee transmitor connected to your computer to recieve the data with the receiver.
 
-## The reciever
-PySerial is required in order to connect to the Serial in the reciever. You will need to have Python 3 and pip installed. Please check GitHub or the offical website in order to install those. Afterwards run the following command on terminal:
+## The receiver
+PySerial is required in order to connect to the Serial in the receiver. You will need to have Python 3 and pip installed. Please check GitHub or the offical website in order to install those. Afterwards run the following command on terminal:
 
 `pip3 install pyserial`
 
 Once the install is over, you are ready to go! it's that easy!
 
 Run the following command on terminal once in the CanSat folder:
-`python3 reciever/reciever.py`
+`python3 receiver/receiver.py`
 
 You will be asked to write the serial port and bandwidth limit. Afterwards you will be asked for the file name. This file will hold all the collected data 
-and will be saved by default in the reciever folder.
+and will be saved by default in the receiver folder.
 Follow the instructions on the terminal, by pressing the Enter key to move forward or CTRL(CMD)+C to leave the session.
 
 ## The sender
@@ -56,8 +56,8 @@ If you want to customize the files to your own needs, only the following files s
 * sender/lib/CanSatLib/CanSatLib.h
 
 To install more libararies, just use the lib folder for it.
-### reciever:
-* reciever/reciever.py
+### receiver:
+* receiver/receiver.py
 
 ## Bugs
 Not yet registered
