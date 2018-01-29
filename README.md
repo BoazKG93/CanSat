@@ -25,7 +25,7 @@ The reciever (1) is written in Python 3 and is pretty straightforward, while the
 
 ## Arduino setup
 The following sensors and setup are required in order to get things running:
-![Circuit board](http://i67.tinypic.com/oa40tv.jpg)
+![Circuit board](http://i63.tinypic.com/vzvtcy.jpg)
 Also, you will need an XBee transmitor connected to your computer to recieve the data with the reciever.
 
 ## The reciever
