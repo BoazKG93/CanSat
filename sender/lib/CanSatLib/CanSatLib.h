@@ -3,7 +3,6 @@
 
 #include "Adafruit_Sensor.h"
 #include "Adafruit_BMP280.h"
-#include "Servo.h"
 
 
 enum Position {Outer = 0, Inner = 1};

@@ -28,8 +28,10 @@ import serial
 import time
 if __name__ == "__main__":
   # NOTE the user must ensure that the serial port and baudrate are correct
-  serPort = "/dev/cu.usbserial-DN02MUUN" #raw_input("Please enter the Serial port: ")
-  baudRate = 9600 #input("Please enter the Baudrate: ")
+  serPort = raw_input("Please enter the Serial port: ") #"/dev/cu.usbserial-DN02MUUN" 
+  baudRate = input("Please enter the Baudrate: ") #9600 #input("Please enter the Baudrate: ")
+  fileName = raw_input("Please enter the file name to store the data: ")
+  fileName = fileName + ".csv"
   ser = serial.Serial(serPort, baudRate)
   print("Serial port ",serPort," opened  Baudrate ",str(baudRate))
   ser.flushInput()
@@ -60,8 +62,8 @@ if __name__ == "__main__":
     print("==================")
     ser.flushInput()
     ser.flushOutput()
-    with open('data.csv', 'w+') as the_file:
-      the_file.write("Timestamp (ms),innerAnalogTemp,outerAnalogTemp,pressure,altitude,AccX,AccY,AccZ,innerDigitalTemp\n")
+    with open(fileName, 'w+') as the_file:
+      the_file.write("Timestamp (ms),innerAnalogTemp,outerAnalogTemp,pressure,altitude,AccX,AccY,AccZ,innerDigitalTemp,ServoPosition\n")
       timeout = time.time() + 10
       while True:
   #        time.sleep(0.25)
@@ -71,7 +73,7 @@ if __name__ == "__main__":
           ser.flushInput()
           ser.flushOutput()
           data = recvFromArduino()
-          print("data:",data)
+          print(data)
           the_file.write(data)
           the_file.write("\n")
           timer = timer - 1

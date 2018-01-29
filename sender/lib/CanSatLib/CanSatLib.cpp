@@ -25,9 +25,6 @@ void connect() {
 	Wire.write(GYRO_CONFIG);
 	Wire.write(0x08);
 	Wire.endTransmission();
-	//myservo.attach(11);
-	//myservo.write(20);
-	//rawData->servoPos = 20;
 }
 
 void getGyroData(data* rawData) {

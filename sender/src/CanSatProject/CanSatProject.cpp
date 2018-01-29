@@ -64,8 +64,6 @@ void loop() {
             myservo.attach(11);
             Serial.print("<Satallite is ready>");
             delay(200);
-            position = 20;
-            myservo.write(position);
             Serial.print("<Example sensor read:>");
             delay(100);
             readSensors();
@@ -80,8 +78,7 @@ void loop() {
             StartTime = millis();
         }
     } else if(online && go) {
-        if((eject && i>6) || i > 10) { //100s time..
-            //TODO: Implement motor signal to eject
+        if((eject && i>=6) || i >= 9) { //3s and 4.5s time..
             position = 180;
             myservo.write(position);
         }
