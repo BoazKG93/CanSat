@@ -10,7 +10,7 @@ The project is divided into two main parts:
 
 The reciever (1) is written in Python 3 and is pretty straightforward, while the sender (2) is a bit more complicated and written in C++.
 
-**Table of Contents** *generated with [DocToc](http://doctoc.herokuapp.com/)*
+**Table of Contents**
 
 - [Arduino setup](#arduino-setup)
 - [The reciever](#the-reciever)
