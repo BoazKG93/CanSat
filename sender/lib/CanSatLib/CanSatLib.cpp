@@ -1,8 +1,12 @@
 #include "CanSatLib.h"
 
-
 Adafruit_BMP280 bme;
+Servo servo;
 
+float prevAltitude;
+int i = 0;
+int eject = 0;
+int position = 0;
 
 void connect() {
   	//Connect bme
@@ -25,6 +29,7 @@ void connect() {
 	Wire.write(GYRO_CONFIG);
 	Wire.write(0x08);
 	Wire.endTransmission();
+	servo.attach(11);
 }
 
 void getGyroData(data* rawData) {
@@ -75,19 +80,6 @@ void getBMEData(data* rawData) {
 }
 
 
-int getSignalFromPC() { 
-  if(Serial.available() > 0) {
-    char x = Serial.read();
-    int online = x;
-    if(online == 49) { //ASCII for 1 
-    	return 1;
-    } else {
-    	return 0;
-    } 
-   }
-}
-
-
 int ejection(float prevAltitude, float currentAltitude) {
 	float diff = currentAltitude - prevAltitude;
 	if(diff < -0.8) { //1 for 1cm or 1m fall?
@@ -97,9 +89,58 @@ int ejection(float prevAltitude, float currentAltitude) {
 	}
 }
 
+void sendToGround(const char* msg) {
+	char* string = (char*)malloc(strlen(msg)+2);
+	memcpy(&string[0], "<", 1);
+	memcpy(&string[1], msg, strlen(msg));
+	memcpy(&string[strlen(msg)+1], ">", 1);
+	string[strlen(msg)+2] = '\0';
+	Serial.write(string);
+	free(string);
+}
 
+void rotateServo(int deg) {
+	servo.write(deg);
+}
 
+void readSensors() {
+    struct data* rawData = (data*)malloc(sizeof(data));
 
+    //Retrive data from sensors
+    getGyroData(rawData);
+    getAnalogTemp(rawData, 1, Inner);
+    getAnalogTemp(rawData, 0, Outer);
+    getBMEData(rawData);
 
+    //Calculate ejection
+    if(i==1||(i%2 == 0 && i != 0)) { //one second has passed, update prevAltitude
+        prevAltitude = rawData->altitude;
+    } else if(!eject) {
+        eject = ejection(prevAltitude, rawData->altitude);
+    }
 
+    float timeF = (i*500)/1000; //Calculating time - i*500ms divided by 1000 will give seconds
+    //Converting floats to string due to Arduino lack of support in sprintf
+    char time[10], innerDigitalTemp[10], outerAnalogTemp[10], innerAnalogTemp[10], pressure[10], altitude[10], AccZ[10], AccY[10], AccX[10];
+    dtostrf(timeF, 1, 2, time);
+    dtostrf(rawData->innerAnalogTemp, 3, 3, innerAnalogTemp);
+    dtostrf(rawData->outerAnalogTemp, 3, 3, outerAnalogTemp);
+    dtostrf(rawData->pressure, 3, 3, pressure);
+    dtostrf(rawData->altitude, 3, 3, altitude);
+    dtostrf(rawData->AccX, 3, 3, AccX);
+    dtostrf(rawData->AccY, 3, 3, AccY);
+    dtostrf(rawData->AccZ, 3, 3, AccZ);
+    dtostrf(rawData->innerDigitalTemp, 3, 3, innerDigitalTemp);
 
+    //Calcualting total length
+    int len = snprintf(NULL, 0, "%s,%s,%s,%s,%s,%s,%s,%s,%s,%d", time , innerAnalogTemp, outerAnalogTemp, pressure, altitude, AccX, AccY, AccZ, innerDigitalTemp, position);
+    char* buffer = (char*)malloc(sizeof(char)*len+1); //+1 for trailing 0
+
+    //Saving to the buffer and sending to ground
+    sprintf(buffer, "%s,%s,%s,%s,%s,%s,%s,%s,%s,%d", time, innerAnalogTemp, outerAnalogTemp, pressure, altitude, AccX, AccY, AccZ, innerDigitalTemp, position);
+    sendToGround(buffer);
+
+    //Free the data
+    free(buffer);
+    free(rawData); 
+}

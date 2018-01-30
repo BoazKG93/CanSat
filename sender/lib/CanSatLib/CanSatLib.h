@@ -3,7 +3,12 @@
 
 #include "Adafruit_Sensor.h"
 #include "Adafruit_BMP280.h"
-
+#include "Servo.h"
+//Defining global vars
+extern float prevAltitude;
+extern int i; //timer
+extern int eject;
+extern int position;
 
 enum Position {Outer = 0, Inner = 1};
 
@@ -31,8 +36,12 @@ void connect();
 void getGyroData(data* rawData);
 void getAnalogTemp(data* rawData, const int pin, int position);
 void getBMEData(data* rawData);
-//Get launch signal from PC
-int getSignalFromPC();
+//Rotate the engine
+void rotateServo(int deg);
+//Send the data to the receiver on the ground
+void sendToGround(const char* msg);
+//Read the sensors
+void readSensors();
 
 #endif 
 

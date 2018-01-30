@@ -72,6 +72,7 @@ Some ideas to improve the project:
 * Add an automated graph program
 * Consider replacing the Hardware Serial with Software Serial
 * Use XBee library for communication instead of Serial
+* Really check if the sensors are online! use resistors!
 
 ## Copyright and license
 

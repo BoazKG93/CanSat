@@ -28,9 +28,9 @@ import serial
 import time
 if __name__ == "__main__":
   # NOTE the user must ensure that the serial port and baudrate are correct
-  serPort = raw_input("Please enter the Serial port: ") #"/dev/cu.usbserial-DN02MUUN" 
+  serPort = input("Please enter the Serial port: ") #"/dev/cu.usbserial-DN02MUUN" 
   baudRate = input("Please enter the Baudrate: ") #9600 #input("Please enter the Baudrate: ")
-  fileName = raw_input("Please enter the file name to store the data: ")
+  fileName = input("Please enter the file name to store the data: ")
   fileName = fileName + ".csv"
   ser = serial.Serial(serPort, baudRate)
   print("Serial port ",serPort," opened  Baudrate ",str(baudRate))
