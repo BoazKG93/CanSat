@@ -35,8 +35,11 @@ void loop() {
             sendToGround("Satallite has been launched");
         }
     } else if(online && go) {
-        if((eject && i>=6) || i >= 9) { //Allow ejection only after 3s or eject anyway after 4.5s
+        if(eject && i>=6) { //allow ejection only after 3s
             position = 180;
+            rotateServo(position);
+        } else if(i >= 9) { //or eject anyway after 4.5s
+            position = 181;
             rotateServo(position);
         }
 

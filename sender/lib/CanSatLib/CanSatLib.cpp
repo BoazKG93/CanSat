@@ -95,7 +95,7 @@ void sendToGround(const char* msg) {
 	memcpy(&string[1], msg, strlen(msg));
 	memcpy(&string[strlen(msg)+1], ">", 1);
 	string[strlen(msg)+2] = '\0';
-	Serial.write(string);
+	Serial.print(string);
 	free(string);
 }
 
@@ -113,23 +113,26 @@ void readSensors() {
     getBMEData(rawData);
 
     //Calculate ejection
-    if(i==1||(i%2 == 0 && i != 0)) { //one second has passed, update prevAltitude
+    if(i%2 == 0) { //one second has passed, update prevAltitude
+    	if(prevAltitude != 0) {
+    		eject = ejection(prevAltitude, rawData->altitude);	
+    	}
         prevAltitude = rawData->altitude;
     } else if(!eject) {
-        eject = ejection(prevAltitude, rawData->altitude);
+    	eject = ejection(prevAltitude, rawData->altitude);
     }
-
-    float timeF = (i*500)/1000; //Calculating time - i*500ms divided by 1000 will give seconds
+    
+    float timeF = ((float)i*500.0)/1000.0; //Calculating time - i*500ms divided by 1000 will give seconds
     //Converting floats to string due to Arduino lack of support in sprintf
-    char time[6], innerDigitalTemp[6], outerAnalogTemp[6], innerAnalogTemp[6], pressure[12], altitude[10], AccZ[6], AccY[6], AccX[6];
-    dtostrf(timeF, 1, 2, time);
-    dtostrf(rawData->innerAnalogTemp, 3, 3, innerAnalogTemp);
-    dtostrf(rawData->outerAnalogTemp, 3, 3, outerAnalogTemp);
-    dtostrf(rawData->pressure, 3, 3, pressure);
-    dtostrf(rawData->altitude, 3, 3, altitude);
-    dtostrf(rawData->AccX, 3, 3, AccX);
-    dtostrf(rawData->AccY, 3, 3, AccY);
-    dtostrf(rawData->AccZ, 3, 3, AccZ);
+    char time[10], innerDigitalTemp[10], outerAnalogTemp[10], innerAnalogTemp[10], pressure[10], altitude[10], AccZ[10], AccY[10], AccX[10];
+    dtostrf(timeF, 1, 1, time);
+    dtostrf(rawData->innerAnalogTemp, 3, 2, innerAnalogTemp);
+    dtostrf(rawData->outerAnalogTemp, 3, 2, outerAnalogTemp);
+    dtostrf(rawData->pressure, 3, 2, pressure);
+    dtostrf(rawData->altitude, 3, 2, altitude);
+    dtostrf(rawData->AccX, 3, 2, AccX);
+    dtostrf(rawData->AccY, 3, 2, AccY);
+    dtostrf(rawData->AccZ, 3, 2, AccZ);
     dtostrf(rawData->innerDigitalTemp, 3, 3, innerDigitalTemp);
 
     //Calcualting total length

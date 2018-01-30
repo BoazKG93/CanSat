@@ -63,8 +63,8 @@ if __name__ == "__main__":
     ser.flushInput()
     ser.flushOutput()
     with open(fileName, 'w+') as the_file:
-      the_file.write("Timestamp (ms),innerAnalogTemp,outerAnalogTemp,pressure,altitude,AccX,AccY,AccZ,innerDigitalTemp,ServoPosition\n")
-      timeout = time.time() + 10
+      the_file.write("Timestamp (s),innerAnalogTemp,outerAnalogTemp,pressure,altitude,AccX,AccY,AccZ,innerDigitalTemp,ServoPosition\n")
+      timeout = time.time() + 60
       while True:
   #        time.sleep(0.25)
           timer = 0
