@@ -31,11 +31,11 @@ void loop() {
         char x = Serial.read();
         int y = x;
         if(y == 49) {
-            go = 1; //Going online!
+            go = 1; //Going to the skys!
             sendToGround("Satallite has been launched");
         }
     } else if(online && go) {
-        if((eject && i>=6) || i >= 9) { //3s and 4.5s time..
+        if((eject && i>=6) || i >= 9) { //Allow ejection only after 3s or eject anyway after 4.5s
             position = 180;
             rotateServo(position);
         }

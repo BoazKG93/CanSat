@@ -73,6 +73,7 @@ Some ideas to improve the project:
 * Consider replacing the Hardware Serial with Software Serial
 * Use XBee library for communication instead of Serial
 * Really check if the sensors are online! use resistors!
+* Allow dynamic sensor adding (via function)
 
 ## Copyright and license
 
