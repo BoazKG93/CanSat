@@ -121,7 +121,7 @@ void readSensors() {
 
     float timeF = (i*500)/1000; //Calculating time - i*500ms divided by 1000 will give seconds
     //Converting floats to string due to Arduino lack of support in sprintf
-    char time[10], innerDigitalTemp[10], outerAnalogTemp[10], innerAnalogTemp[10], pressure[10], altitude[10], AccZ[10], AccY[10], AccX[10];
+    char time[6], innerDigitalTemp[6], outerAnalogTemp[6], innerAnalogTemp[6], pressure[12], altitude[10], AccZ[6], AccY[6], AccX[6];
     dtostrf(timeF, 1, 2, time);
     dtostrf(rawData->innerAnalogTemp, 3, 3, innerAnalogTemp);
     dtostrf(rawData->outerAnalogTemp, 3, 3, outerAnalogTemp);
